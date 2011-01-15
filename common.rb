@@ -40,7 +40,7 @@ module Common
     end
     
     # Set the Mac OS system volume to level
-    # * Accepts an integer argument of 0-7
+    # * Accepts an integer in range 0-7
     # * Level values less than 0 are interpreted as min. value
     # * Level values greater than 7 are interpreted as max. value
     def self.level(level)
@@ -53,14 +53,19 @@ module Common
     
   end
   
-  class OSX::NSDictionary
+  # Adds some nice Ruby-like method aliases to the existing class
+  # * load: read in a plist file at path as string
+  # * write: write out plist to file at path as string
+  class OSX::NSMutableDictionary
     objc_alias_class_method('load:', 'dictionaryWithContentsOfFile:')
     objc_alias_method('write:', 'writeToFile:atomically:')
   end
 
-  class Plist < OSX::NSDictionary
-    # Wee-iz ehm-tay
-    # Wee-iz teh fake
+  # 
+  class Plist < OSX::NSMutableDictionary
+    # This class is defined for convenience. It is essentially an ObjC "class" alias.
+    # Note: there are many other code bases which define a Plist class
+    # and this can cause conflicts.
   end
   
   class UUID < String
@@ -88,7 +93,7 @@ module Common
   class Console
     
     # Returns a Ruby Struct describing users that are logged via the Mac OS X Console
-    # * This list includes any users utilizing Fast User Switching
+    # * This list includes any users with Fast User Switching sessions
     # * Struct: user names (array), UID/GID/name of the current console user (array), num of users logged on (int), all info parsed from the Dynamic Store (hash)
     def self.get_users()
         consoleUsers = Struct.new(:names, :current_user, :total_users, :info)
