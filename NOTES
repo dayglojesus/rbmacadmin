@@ -1,0 +1,8 @@
+Simply copy the rbmacadmin directory into /Library/Ruby/Site/1.8 or any other directory that is your Ruby
+$LOAD_PATH. This will ensure its availability in all your scripts.
+
+After that, you can simply do something like:
+
+require 'rbmacadmin/common'
+
+-- Brian
